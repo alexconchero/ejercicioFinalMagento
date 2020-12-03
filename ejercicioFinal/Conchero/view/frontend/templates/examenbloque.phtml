@@ -1,0 +1,57 @@
+<?php /** @var  \Hiberus\Conchero\Block\BloqueExamen $block */ ?>
+
+<h2 class="title"><?=__('Listado de alumnos') ?></h1>
+
+<ul class="listaAlumnos">
+<?php 
+    $notaMedia = 0;
+    $i = 0;
+?>
+<?php foreach($block->getListExam() as $lista): ?>
+    <?php $i++; ?>
+    <?php if($lista->getId()==9):?>
+        <?php $alumno = $lista;?>
+    <?php endif;?>
+
+    <?php $value = ($lista->getId()%2==0) ? "par" : "impar";?>
+    <?php $value2 = ($lista->getMark()>=5.00) ? "aprobado" : "suspenso";?>
+    <?php $value3 = ($i<4) ? "tresmejores" : "resto";?>
+
+    <li class="<?= $value .' ' . $value2 .' '. $value3;?>">
+        
+        <?= $lista->getId() .'->'. $escaper->escapeHtml($lista->getFirstName())?> <?= $escaper->escapeHtml($lista->getLastName()) ?>
+        <p class="notas">Nota: <?= $escaper->escapeHtml($lista->getMark()) ?><p>
+    </li>
+
+    <!--para comprobar cual es el alumno con la nota mas alta-->
+    <?php if($lista->getMark()>$alumno->getMark()):?>
+        <?php $alumno = $lista;?>
+    <?php endif; ?>
+    <?php $notaMedia += $lista->getMark();?>
+<?php endforeach; ?>
+</ul>
+<p><?= __('Nota media de la clase--> ') . $notaMedia/count($block->getListExam())?></p>
+<p><?= __('Total number of students: %1', count($block->getListExam()))?></p>
+<input type="button" class="button" value="Mostrar" />
+<input type="button" class="buttonAlert" value="Mostrar nota mas alta" />
+<br/>
+<p><?= __('El alumno con la nota mas alta es: ')?></p>
+
+<script type="text/x-magento-init">
+{
+     ".button": {
+          "Hiberus_Conchero/js/mostrarNotas": {}
+     }
+}
+</script>
+<script type="text/x-magento-init">
+{
+     ".buttonAlert": {
+          "Hiberus_Conchero/js/notaMasAlta": {
+            "nombre": "<?= $alumno->getFirstName() ?>",
+            "apellido": "<?= $alumno->getLastName() ?>",
+            "nota": "<?= $alumno->getMark() ?>"
+        }     
+     }
+}
+</script>

@@ -1,0 +1,36 @@
+@margin-left-primary: 20px;
+& when (@media-common = true) {  
+
+    h2.title {
+        color: blue;
+            
+    }
+    li.impar{
+        margin-left: @margin-left-primary;
+    }
+
+    li.aprobado{
+        color: green;
+    }
+
+    li.suspenso{
+        color: red;
+    }
+    li.tresmejores{
+        font-weight: bold;
+        font-size: 150%;
+    }
+
+ 
+ }
+
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = 768px) {    
+    
+    h2.title {
+        color: red;
+    }
+    li.impar{
+        margin-left: @margin-left-primary;
+    }
+}
